@@ -2,7 +2,7 @@ import {User} from "../models/user.models.js"
 import {ApiResponse} from "../utils/apiresponse.js"
 import {ApiError} from "../utils/api-error.js"
 import {asyncHandler} from "../utils/async-handler.js"
-import {sendEmail, emailVerificationContent} from "../utils/mail.js"
+import {sendEmail, emailVerificationContent, forgotPasswordContent} from "../utils/mail.js"
 import jwt from "jsonwebtoken"
 
 const generateAccessAndRefreshTokens= async(userId)=>{
