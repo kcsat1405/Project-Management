@@ -221,7 +221,36 @@ const getProjectMembers = asyncHandler(async(req,res)=>{
 })
 
 const updateMemberRole = asyncHandler(async(req,res)=>{
-    //test
+    const {projectId, userId}= req.params
+    const {newRole}=req.body
+    if(!AvailableUserRole.includes(newRole)){
+        throw new ApiError(400, "Invalid role")
+    }
+    let projectMember = await ProjectMember.findOne({
+        project: new mongoose.Types.ObjectId(projectId),
+        user: new mongoose.Types.ObjectId(userId)
+    })
+
+    if(!projectMember){
+        throw new ApiError(404, "Project member not found")
+    }
+
+    projectMember =await ProjectMember.findByIdAndUpdate(
+        projectMember._id,
+        {
+            role: newRole
+        },
+        {
+            new: true,
+        }
+    )
+     if(!projectMember){  //if updation is done then only we will receive this projectMember
+        throw new ApiError(404, "Project member not found")
+    }
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, projectMember, "Project member role updated successfully"))
 })
 
 const deleteMember = asyncHandler(async(req,res)=>{
