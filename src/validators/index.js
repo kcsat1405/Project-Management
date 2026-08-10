@@ -59,6 +59,20 @@ const userResetForgotPasswordValidator=()=>{
         .withMessage("Password is required")
     ]
 }
+
+const createProjectValidator=()=>{
+    return[
+        body("name")
+        .notEmpty()
+        .withMessage("name is required"),
+
+        body("description")
+        .optional()
+    ]
+}
+
+
+
 export{
     userRegisterValidator, userLoginValidator, userChangeCurrentPasswordValidator,
     userForgotPasswordValidator, userResetForgotPasswordValidator,
