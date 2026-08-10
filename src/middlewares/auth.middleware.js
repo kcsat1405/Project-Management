@@ -46,9 +46,14 @@ export const validateProjectPermission= (roles=[])=>{
 
         req.user.role= givenRole
 
-        if(!roles.includes(givenRole)){
-            throw new ApiError(403, "You do not have permission to perform this action")
+        const found = roles.find((roles) => roles === givenRole);
+        if (!found) {
+            throw new ApiError(403, "You do not have permission");
         }
+
+        // if(!roles.includes(givenRole)){
+        //     throw new ApiError(403, "You do not have permission to perform this action")
+        // }
         next()
     })
 }
