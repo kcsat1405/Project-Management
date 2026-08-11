@@ -9,30 +9,73 @@ import mongoose from "mongoose"
 import {AvailableUserRole, UserRolesEnum } from "../utils/constants.js"
 
 
-const getTasks= asyncHandler(async(req,res)={
+const getTasks= asyncHandler(async(req,res)=>{
+    const {projectId}= req.params
+    const project=await Project.findById(projectId)
+     if(!project){
+        throw new ApiError(404, "Project not found")
+    }
+
+    const tasks= await Task.find({
+        project: new mongoose.Types.ObjectId(projectId)
+    }).populate("assignedTo", "avatar username fullname")
+
+    return res.status(201)
+    .json(new ApiResponse(201, tasks, "Task fetched successfully"))
+})
+const createTask= asyncHandler(async(req,res)=>{
+    const {title,description,assignedTo,status}= req.body
+    const {projectId}= req.params
+    const project=await Project.findById(projectId)
+    if(!project){
+        throw new ApiError(404, "Project not found")
+    }
+    const files= req.files || []
+
+    const attachments= files.map((file)=>{
+        return{
+            url: `${process.env.SERVER_URL}/images/${file.originalname}`,
+            mimetype: file.mimetype,
+            size: file.size
+        }
+    })
+
+    const task= await Task.create({
+        title,
+        description,
+        projectId: new mongoose.Types.ObjectId(projectId),
+        assignedTo: new mongoose.Types.ObjectId(assignedTo), //
+        status: status,
+        assignedBy: new mongoose.Types.ObjectId(req.user._id),
+        attachments: attachments
+    })
+
+    return res
+    .status(201)
+    .json(new ApiResponse(
+        201,
+        task,
+        "Task created successfully"
+    ))
+})
+const getTaskById= asyncHandler(async(req,res)=>{
     //tasks
 })
-const createTask= asyncHandler(async(req,res)={
+const updateTask= asyncHandler(async(req,res)=>{
     //tasks
 })
-const getTaskById= asyncHandler(async(req,res)={
-    //tasks
-})
-const updateTask= asyncHandler(async(req,res)={
-    //tasks
-})
-const deleteTask= asyncHandler(async(req,res)={
+const deleteTask= asyncHandler(async(req,res)=>{
     //tasks
 })
 
 
-const createSubTask= asyncHandler(async(req,res)={
+const createSubTask= asyncHandler(async(req,res)=>{
     //tasks
 })
-const updateSubTask= asyncHandler(async(req,res)={
+const updateSubTask= asyncHandler(async(req,res)=>{
     //tasks
 })
-const deleteSubTask= asyncHandler(async(req,res)={
+const deleteSubTask= asyncHandler(async(req,res)=>{
     //tasks
 })
 
