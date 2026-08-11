@@ -25,3 +25,19 @@ const deleteTask= asyncHandler(async(req,res)={
     //tasks
 })
 
+
+const createSubTask= asyncHandler(async(req,res)={
+    //tasks
+})
+const updateSubTask= asyncHandler(async(req,res)={
+    //tasks
+})
+const deleteSubTask= asyncHandler(async(req,res)={
+    //tasks
+})
+
+export{
+    getTasks,createTask,deleteTask,createSubTask,updateTask,updateSubTask,
+    deleteSubTask,getTaskById
+}
+
