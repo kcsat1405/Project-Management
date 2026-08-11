@@ -6,7 +6,7 @@ import {ApiResponse} from "../utils/apiresponse.js"
 import {ApiError} from "../utils/api-error.js"
 import {asyncHandler} from "../utils/async-handler.js"
 import mongoose from "mongoose"
-import { UserRolesEnum } from "../utils/constants.js"
+import {AvailableUserRole, UserRolesEnum } from "../utils/constants.js"
 
 const getProjects = asyncHandler(async(req,res)=>{
     const projects= await ProjectMember.aggregate([
