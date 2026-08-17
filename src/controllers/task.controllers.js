@@ -133,14 +133,10 @@ const getTaskById= asyncHandler(async(req,res)=>{
 })
 const updateTask= asyncHandler(async(req,res)=>{
     const {taskId}= req.params
-    const {title,description,status,projectId,usesrId}=req.body
-    const project=new mongoose.Types.ObjectId(projectId)
-    const user= new mongoose.Types.ObjectId(userId)
+    const {title,description,status}=req.body
     const task=await Task.findByIdAndUpdate(
         taskId,
         {
-            project,
-            user,
             title,
             description,
             status,
@@ -153,10 +149,10 @@ const updateTask= asyncHandler(async(req,res)=>{
         throw new ApiError(404, "Task not found")
     }
 
-    res.status(
-        200,
-        task,
-        "task updated successfully"
+    res.status(200).json(
+        new ApiResponse(
+            200, task, "task updated successfully"
+        )
     )
 
     
