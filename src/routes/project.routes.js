@@ -16,7 +16,7 @@ import {validate} from "../middlewares/validator.middleware.js"
 import {createProjectValidator, addMembertoProjectValidator} from "../validators/index.js"
 
 import {verifyJWT, validateProjectPermission} from "../middlewares/auth.middleware.js"
-import { UserRolesEnum } from "../utils/constants.js";
+import { UserRolesEnum, AvailableUserRole } from "../utils/constants.js";
 
 const router=Router();
 router.use(verifyJWT)
