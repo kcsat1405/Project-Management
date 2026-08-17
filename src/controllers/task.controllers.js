@@ -135,16 +135,16 @@ const updateTask= asyncHandler(async(req,res)=>{
     const {taskId}= req.params
     const {title,description,status}=req.body
     const updateFields={}
-    if(!AvailableTaskStatus.includes(status)){
-        throw new ApiError(404, "status not found")
+    if(status!==undefined){
+        if(!AvailableTaskStatus.includes(status)){
+            throw new ApiError(400, "status not found")
+        }
+            updateFields.status=status
     }
-    else{
-        updateFields.status=status
-    }
-    if(!title){
+    if(title!==undefined){
         updateFields.title=title
     }
-    if(!description){
+    if(description!==undefined){
         updateFields.description=description
     }
     const task=await Task.findByIdAndUpdate(
