@@ -6,7 +6,7 @@ import {ApiResponse} from "../utils/apiresponse.js"
 import {ApiError} from "../utils/api-error.js"
 import {asyncHandler} from "../utils/async-handler.js"
 import mongoose from "mongoose"
-import {AvailableUserRole, UserRolesEnum } from "../utils/constants.js"
+import {AvailableUserRole, UserRolesEnum, TaskStatusEnum, AvailableTaskStatus  } from "../utils/constants.js"
 
 
 const getTasks= asyncHandler(async(req,res)=>{
@@ -134,13 +134,22 @@ const getTaskById= asyncHandler(async(req,res)=>{
 const updateTask= asyncHandler(async(req,res)=>{
     const {taskId}= req.params
     const {title,description,status}=req.body
+    const updateFields={}
+    if(!AvailableTaskStatus.includes(status)){
+        throw new ApiError(404, "status not found")
+    }
+    else{
+        updateFields.status=status
+    }
+    if(!title){
+        updateFields.title=title
+    }
+    if(!description){
+        updateFields.description=description
+    }
     const task=await Task.findByIdAndUpdate(
         taskId,
-        {
-            title,
-            description,
-            status,
-        },
+        updateFields,
         {
             new: true
         }
@@ -149,7 +158,7 @@ const updateTask= asyncHandler(async(req,res)=>{
         throw new ApiError(404, "Task not found")
     }
 
-    res.status(200).json(
+    return res.status(200).json(
         new ApiResponse(
             200, task, "task updated successfully"
         )
